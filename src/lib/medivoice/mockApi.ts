@@ -95,7 +95,7 @@ export async function transcribeSpeech(
   onPartial: (text: string) => void,
   seed = Math.floor(Math.random() * TRANSCRIPT_SAMPLES.length),
 ): Promise<string> {
-  const full = TRANSCRIPT_SAMPLES[seed % TRANSCRIPT_SAMPLES.length];
+  const full = TRANSCRIPT_SAMPLES[seed % TRANSCRIPT_SAMPLES.length] ?? "";
   const words = full.split(" ");
   let acc = "";
   for (const w of words) {
@@ -107,7 +107,7 @@ export async function transcribeSpeech(
   return acc;
 }
 
-const OCR_TEMPLATES: Record<string, ExtractedField[]> = {
+const OCR_TEMPLATES = {
   lab: [
     { label: "Glucose (fasting)", value: "180 mg/dL", flagged: true, x: 58, y: 30 },
     { label: "HbA1c", value: "8.9 %", flagged: true, x: 58, y: 44 },
@@ -119,7 +119,7 @@ const OCR_TEMPLATES: Record<string, ExtractedField[]> = {
     { label: "Telmisartan", value: "40 mg OD", x: 42, y: 50 },
     { label: "Prescriber", value: "Dr. A. Nair, MD", x: 34, y: 18 },
   ],
-};
+} satisfies Record<string, ExtractedField[]>;
 
 /** Simulated OCR + field extraction on an uploaded document. */
 export async function extractReport(fileName: string): Promise<ReportDoc> {
@@ -212,9 +212,6 @@ export async function generateSummary(input: {
       currentMedication: meds.length ? meds : ["None reported"],
       oneLiner: `${input.patientInfo.age}${input.patientInfo.sex[0]} — ${first.slice(0, 70)}`,
       confidence: 0.78 + Math.random() * 0.15,
-      ...(input.reports.length
-        ? {}
-        : {}),
     },
     timelineEvents: [
       {

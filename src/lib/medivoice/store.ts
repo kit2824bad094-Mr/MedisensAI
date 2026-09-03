@@ -37,7 +37,9 @@ export function useRecords() {
     const l = () => setSnapshot(records);
     listeners.add(l);
     l();
-    return () => listeners.delete(l);
+    return () => {
+      listeners.delete(l);
+    };
   }, []);
   return snapshot;
 }
