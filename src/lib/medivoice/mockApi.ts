@@ -212,9 +212,6 @@ export async function generateSummary(input: {
       currentMedication: meds.length ? meds : ["None reported"],
       oneLiner: `${input.patientInfo.age}${input.patientInfo.sex[0]} — ${first.slice(0, 70)}`,
       confidence: 0.78 + Math.random() * 0.15,
-      ...(input.reports.length
-        ? {}
-        : {}),
     },
     timelineEvents: [
       {
