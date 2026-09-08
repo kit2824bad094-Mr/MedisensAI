@@ -274,7 +274,7 @@ function IntakePage() {
           {question && <AdaptiveQuestionCard question={question} onAnswer={record} busy={thinking} />}
 
           {question && mode !== "touch" && (
-            <VoiceCapture onTranscript={record} seed={answers.length} disabled={thinking} />
+            <VoiceCapture onTranscript={record} seed={answers.length} disabled={thinking} language={language} />
           )}
 
           {!question && !thinking && (
