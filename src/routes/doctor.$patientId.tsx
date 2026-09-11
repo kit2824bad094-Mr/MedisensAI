@@ -216,6 +216,39 @@ function PatientDetail() {
         </div>
 
         <aside className="space-y-4">
+          <Panel
+            title="Viewed status"
+            aside={
+              <span className={cn("size-2 rounded-full", record.viewed ? "bg-ok" : "bg-warn")} aria-hidden />
+            }
+          >
+            <p className="text-sm text-muted-foreground">
+              {record.viewed
+                ? "You have already viewed this patient. Toggle below if you need to reset."
+                : "This patient has not been viewed yet. Click below once you have reviewed the record."}
+            </p>
+            <div className="mt-3 flex gap-2">
+              <Button
+                size="sm"
+                variant={record.viewed ? "outline" : "default"}
+                onClick={() => updateRecord(patientInfo.id, { viewed: true })}
+                disabled={record.viewed}
+                className="flex-1"
+              >
+                <Eye className="size-4" aria-hidden /> Mark viewed
+              </Button>
+              <Button
+                size="sm"
+                variant={record.viewed ? "default" : "outline"}
+                onClick={() => updateRecord(patientInfo.id, { viewed: false })}
+                disabled={!record.viewed}
+                className="flex-1"
+              >
+                <EyeOff className="size-4" aria-hidden /> Mark not viewed
+              </Button>
+            </div>
+          </Panel>
+
           <Panel title="Actions">
             <div className="flex flex-wrap gap-2">
               <Button size="sm" onClick={() => setApproved(true)} disabled={approved}>
@@ -223,22 +256,6 @@ function PatientDetail() {
               </Button>
               <Button size="sm" variant="outline" onClick={() => setShowTranscript(true)}>
                 <Pencil className="size-4" aria-hidden /> Edit
-              </Button>
-              <Button
-                size="sm"
-                variant={record.viewed ? "secondary" : "outline"}
-                aria-pressed={record.viewed}
-                onClick={() => updateRecord(patientInfo.id, { viewed: !record.viewed })}
-              >
-                {record.viewed ? (
-                  <>
-                    <EyeOff className="size-4" aria-hidden /> Mark not viewed
-                  </>
-                ) : (
-                  <>
-                    <Eye className="size-4" aria-hidden /> Mark viewed
-                  </>
-                )}
               </Button>
               <Button
                 size="sm"
