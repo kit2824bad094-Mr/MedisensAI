@@ -55,15 +55,18 @@ function DoctorQueue() {
 
       <ul className="mt-6 space-y-2">
         {waiting.map((r) => (
-          <li key={r.patientInfo.id}>
+          <li
+            key={r.patientInfo.id}
+            className={cn(
+              "group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border bg-card px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary-soft/40",
+              r.urgency === "red-flag" && "border-alert/45",
+              r.reviewed && "opacity-70",
+            )}
+          >
             <Link
               to="/doctor/$patientId"
               params={{ patientId: r.patientInfo.id }}
-              className={cn(
-                "group flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border bg-card px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary-soft/40",
-                r.urgency === "red-flag" && "border-alert/45",
-                r.reviewed && "opacity-70",
-              )}
+              className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-2"
             >
               <div className="min-w-44">
                 <p className="font-semibold tracking-tight">
@@ -78,26 +81,37 @@ function DoctorQueue() {
                 </p>
               </div>
               <p className="min-w-0 flex-1 truncate text-sm text-surface-foreground">{r.aiSummary.oneLiner}</p>
-              <div className="flex items-center gap-2">
-                <span
-                  className={cn(
-                    "rounded-full border px-2 py-0.5 text-xs font-semibold",
-                    r.viewed
-                      ? "border-ok/30 bg-ok-soft text-ok"
-                      : "border-warn/35 bg-warn-soft text-warn-foreground",
-                  )}
-                >
-                  {r.viewed ? "Viewed" : "Not viewed"}
-                </span>
-                {r.reviewed && (
-                  <span className="rounded-full border bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                    Reviewed
-                  </span>
-                )}
-                <UrgencyBadge urgency={r.urgency} />
-                <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
-              </div>
             </Link>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => updateRecord(r.patientInfo.id, { viewed: !r.viewed })}
+                aria-pressed={r.viewed}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors",
+                  r.viewed
+                    ? "border-ok/30 bg-ok-soft text-ok hover:bg-ok/20"
+                    : "border-warn/35 bg-warn-soft text-warn-foreground hover:bg-warn/20",
+                )}
+              >
+                {r.viewed ? (
+                  <>
+                    <Eye className="size-3.5" aria-hidden /> Viewed
+                  </>
+                ) : (
+                  <>
+                    <EyeOff className="size-3.5" aria-hidden /> Not viewed
+                  </>
+                )}
+              </button>
+              {r.reviewed && (
+                <span className="rounded-full border bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                  Reviewed
+                </span>
+              )}
+              <UrgencyBadge urgency={r.urgency} />
+              <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
+            </div>
           </li>
         ))}
       </ul>
