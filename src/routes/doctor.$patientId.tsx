@@ -21,6 +21,38 @@ import { Textarea } from "@/components/ui/textarea";
 import { updateRecord, useRecord } from "@/lib/medivoice/store";
 import { cn } from "@/lib/utils";
 
+function ToggleViewedButton({
+  patientId,
+  viewed,
+}: {
+  patientId: string;
+  viewed: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => updateRecord(patientId, { viewed: !viewed })}
+      aria-pressed={viewed}
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+        viewed
+          ? "border-ok/30 bg-ok-soft text-ok hover:bg-ok/20"
+          : "border-warn/35 bg-warn-soft text-warn-foreground hover:bg-warn/20",
+      )}
+    >
+      {viewed ? (
+        <>
+          <Eye className="size-3.5" aria-hidden /> Viewed
+        </>
+      ) : (
+        <>
+          <EyeOff className="size-3.5" aria-hidden /> Not viewed
+        </>
+      )}
+    </button>
+  );
+}
+
 export const Route = createFileRoute("/doctor/$patientId")({
   head: () => ({
     meta: [
