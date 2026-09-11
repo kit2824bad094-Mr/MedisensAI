@@ -79,6 +79,16 @@ function DoctorQueue() {
               </div>
               <p className="min-w-0 flex-1 truncate text-sm text-surface-foreground">{r.aiSummary.oneLiner}</p>
               <div className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    "rounded-full border px-2 py-0.5 text-xs font-semibold",
+                    r.viewed
+                      ? "border-ok/30 bg-ok-soft text-ok"
+                      : "border-warn/35 bg-warn-soft text-warn-foreground",
+                  )}
+                >
+                  {r.viewed ? "Viewed" : "Not viewed"}
+                </span>
                 {r.reviewed && (
                   <span className="rounded-full border bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
                     Reviewed

@@ -4,6 +4,8 @@ import {
   ArrowLeft,
   Check,
   ChevronDown,
+  Eye,
+  EyeOff,
   FileText,
   NotebookPen,
   Pencil,
@@ -98,6 +100,16 @@ function PatientDetail() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <span
+            className={cn(
+              "rounded-full border px-2.5 py-1 text-xs font-semibold",
+              record.viewed
+                ? "border-ok/30 bg-ok-soft text-ok"
+                : "border-warn/35 bg-warn-soft text-warn-foreground",
+            )}
+          >
+            {record.viewed ? "Viewed" : "Not viewed"}
+          </span>
           <UrgencyBadge urgency={record.urgency} />
           {record.reviewed && (
             <span className="rounded-full border border-ok/30 bg-ok-soft px-2.5 py-1 text-xs font-semibold text-ok">
@@ -188,6 +200,22 @@ function PatientDetail() {
               </Button>
               <Button size="sm" variant="outline" onClick={() => setShowTranscript(true)}>
                 <Pencil className="size-4" aria-hidden /> Edit
+              </Button>
+              <Button
+                size="sm"
+                variant={record.viewed ? "secondary" : "outline"}
+                aria-pressed={record.viewed}
+                onClick={() => updateRecord(patientInfo.id, { viewed: !record.viewed })}
+              >
+                {record.viewed ? (
+                  <>
+                    <EyeOff className="size-4" aria-hidden /> Mark not viewed
+                  </>
+                ) : (
+                  <>
+                    <Eye className="size-4" aria-hidden /> Mark viewed
+                  </>
+                )}
               </Button>
               <Button
                 size="sm"
