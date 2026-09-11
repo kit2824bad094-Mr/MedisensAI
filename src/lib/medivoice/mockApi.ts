@@ -145,7 +145,7 @@ export async function transcribeSpeech(
   seed = 0,
   language = "English",
 ): Promise<string> {
-  const samples = TRANSCRIPT_SAMPLES[language] ?? TRANSCRIPT_SAMPLES.English ?? [];
+  const samples = TRANSCRIPT_SAMPLES[language] ?? TRANSCRIPT_SAMPLES["English"] ?? [];
   const full = samples[seed % samples.length] ?? "";
   const words = full.split(" ");
   let acc = "";

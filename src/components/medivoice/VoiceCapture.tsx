@@ -55,7 +55,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
   const [notice, setNotice] = useState<string | null>(null);
   const [levels, setLevels] = useState<number[]>(IDLE);
   const [supported, setSupported] = useState(true);
-  const copy = COPY[language] ?? COPY.English;
+  const copy = COPY[language] ?? COPY["English"];
 
   const recognition = useRef<Recognition | null>(null);
   const finalText = useRef("");

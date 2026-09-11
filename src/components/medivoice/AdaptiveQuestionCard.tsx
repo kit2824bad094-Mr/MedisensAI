@@ -21,7 +21,7 @@ const COPY: Record<string, { assistant: string; unsure: string; placeholder: str
 
 export function AdaptiveQuestionCard({ question, onAnswer, busy, language = "English" }: Props) {
   const [draft, setDraft] = useState("");
-  const copy = COPY[language] ?? COPY.English;
+  const copy = COPY[language] ?? COPY["English"];
 
   return (
     <div className="animate-rise rounded-2xl border bg-card p-5 shadow-clinical">
