@@ -67,11 +67,11 @@ function IntakePage() {
   useEffect(() => {
     if (step !== "interview" || question || thinking || answers.length >= 6) return;
     setThinking(true);
-    void getNextQuestion(answers).then((q) => {
+    void getNextQuestion(answers, language).then((q) => {
       setQuestion(q);
       setThinking(false);
     });
-  }, [step, question, thinking, answers]);
+  }, [step, question, thinking, answers, language]);
 
   useEffect(() => {
     transcriptEnd.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -271,7 +271,7 @@ function IntakePage() {
             <div ref={transcriptEnd} />
           </div>
 
-          {question && <AdaptiveQuestionCard question={question} onAnswer={record} busy={thinking} />}
+          {question && <AdaptiveQuestionCard question={question} onAnswer={record} busy={thinking} language={language} />}
 
           {question && mode !== "touch" && (
             <VoiceCapture onTranscript={record} seed={answers.length} disabled={thinking} language={language} />
