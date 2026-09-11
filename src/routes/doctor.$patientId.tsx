@@ -132,16 +132,7 @@ function PatientDetail() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              "rounded-full border px-2.5 py-1 text-xs font-semibold",
-              record.viewed
-                ? "border-ok/30 bg-ok-soft text-ok"
-                : "border-warn/35 bg-warn-soft text-warn-foreground",
-            )}
-          >
-            {record.viewed ? "Viewed" : "Not viewed"}
-          </span>
+          <ToggleViewedButton patientId={patientInfo.id} viewed={record.viewed} />
           <UrgencyBadge urgency={record.urgency} />
           {record.reviewed && (
             <span className="rounded-full border border-ok/30 bg-ok-soft px-2.5 py-1 text-xs font-semibold text-ok">
