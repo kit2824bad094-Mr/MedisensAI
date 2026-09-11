@@ -21,6 +21,38 @@ import { Textarea } from "@/components/ui/textarea";
 import { updateRecord, useRecord } from "@/lib/medivoice/store";
 import { cn } from "@/lib/utils";
 
+function ToggleViewedButton({
+  patientId,
+  viewed,
+}: {
+  patientId: string;
+  viewed: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => updateRecord(patientId, { viewed: !viewed })}
+      aria-pressed={viewed}
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+        viewed
+          ? "border-ok/30 bg-ok-soft text-ok hover:bg-ok/20"
+          : "border-warn/35 bg-warn-soft text-warn-foreground hover:bg-warn/20",
+      )}
+    >
+      {viewed ? (
+        <>
+          <Eye className="size-3.5" aria-hidden /> Viewed
+        </>
+      ) : (
+        <>
+          <EyeOff className="size-3.5" aria-hidden /> Not viewed
+        </>
+      )}
+    </button>
+  );
+}
+
 export const Route = createFileRoute("/doctor/$patientId")({
   head: () => ({
     meta: [
@@ -100,16 +132,7 @@ function PatientDetail() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              "rounded-full border px-2.5 py-1 text-xs font-semibold",
-              record.viewed
-                ? "border-ok/30 bg-ok-soft text-ok"
-                : "border-warn/35 bg-warn-soft text-warn-foreground",
-            )}
-          >
-            {record.viewed ? "Viewed" : "Not viewed"}
-          </span>
+          <ToggleViewedButton patientId={patientInfo.id} viewed={record.viewed} />
           <UrgencyBadge urgency={record.urgency} />
           {record.reviewed && (
             <span className="rounded-full border border-ok/30 bg-ok-soft px-2.5 py-1 text-xs font-semibold text-ok">
@@ -193,6 +216,39 @@ function PatientDetail() {
         </div>
 
         <aside className="space-y-4">
+          <Panel
+            title="Viewed status"
+            aside={
+              <span className={cn("size-2 rounded-full", record.viewed ? "bg-ok" : "bg-warn")} aria-hidden />
+            }
+          >
+            <p className="text-sm text-muted-foreground">
+              {record.viewed
+                ? "You have already viewed this patient. Toggle below if you need to reset."
+                : "This patient has not been viewed yet. Click below once you have reviewed the record."}
+            </p>
+            <div className="mt-3 flex gap-2">
+              <Button
+                size="sm"
+                variant={record.viewed ? "outline" : "default"}
+                onClick={() => updateRecord(patientInfo.id, { viewed: true })}
+                disabled={record.viewed}
+                className="flex-1"
+              >
+                <Eye className="size-4" aria-hidden /> Mark viewed
+              </Button>
+              <Button
+                size="sm"
+                variant={record.viewed ? "default" : "outline"}
+                onClick={() => updateRecord(patientInfo.id, { viewed: false })}
+                disabled={!record.viewed}
+                className="flex-1"
+              >
+                <EyeOff className="size-4" aria-hidden /> Mark not viewed
+              </Button>
+            </div>
+          </Panel>
+
           <Panel title="Actions">
             <div className="flex flex-wrap gap-2">
               <Button size="sm" onClick={() => setApproved(true)} disabled={approved}>
@@ -200,22 +256,6 @@ function PatientDetail() {
               </Button>
               <Button size="sm" variant="outline" onClick={() => setShowTranscript(true)}>
                 <Pencil className="size-4" aria-hidden /> Edit
-              </Button>
-              <Button
-                size="sm"
-                variant={record.viewed ? "secondary" : "outline"}
-                aria-pressed={record.viewed}
-                onClick={() => updateRecord(patientInfo.id, { viewed: !record.viewed })}
-              >
-                {record.viewed ? (
-                  <>
-                    <EyeOff className="size-4" aria-hidden /> Mark not viewed
-                  </>
-                ) : (
-                  <>
-                    <Eye className="size-4" aria-hidden /> Mark viewed
-                  </>
-                )}
               </Button>
               <Button
                 size="sm"
