@@ -74,6 +74,8 @@ export interface PatientRecord {
   arrivedAt: string;
   urgency: Urgency;
   reviewed: boolean;
+  /** set manually by the doctor after opening the record */
+  viewed: boolean;
   symptoms: SymptomEntry[];
   history: HistoryEntry[];
   medications: Medication[];

@@ -113,6 +113,7 @@ function IntakePage() {
       arrivedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       urgency: generated.urgency,
       reviewed: false,
+      viewed: false,
       symptoms: answers,
       history: [],
       medications: [],
