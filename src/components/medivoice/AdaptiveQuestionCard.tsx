@@ -8,16 +8,28 @@ interface Props {
   question: InterviewQuestion;
   onAnswer: (answer: string) => void;
   busy?: boolean;
+  language?: string;
 }
 
-export function AdaptiveQuestionCard({ question, onAnswer, busy }: Props) {
+type CardCopy = { assistant: string; unsure: string; placeholder: string; send: string };
+const ENGLISH_COPY: CardCopy = { assistant: "AI intake assistant", unsure: "Not sure", placeholder: "Or type your answer…", send: "Send" };
+const COPY: Record<string, CardCopy> = {
+  English: ENGLISH_COPY,
+  "हिन्दी": { assistant: "AI सेवन सहायक", unsure: "पता नहीं", placeholder: "या अपना उत्तर लिखें…", send: "भेजें" },
+  "தமிழ்": { assistant: "AI உடல்நல உதவியாளர்", unsure: "தெரியவில்லை", placeholder: "அல்லது பதிலை தட்டச்சு செய்யுங்கள்…", send: "அனுப்பு" },
+  "മലയാളം": { assistant: "AI ആരോഗ്യ സഹായി", unsure: "ഉറപ്പില്ല", placeholder: "അല്ലെങ്കിൽ ഉത്തരം ടൈപ്പ് ചെയ്യൂ…", send: "അയയ്ക്കുക" },
+  "मराठी": { assistant: "AI आरोग्य सहाय्यक", unsure: "माहीत नाही", placeholder: "किंवा उत्तर टाइप करा…", send: "पाठवा" },
+};
+
+export function AdaptiveQuestionCard({ question, onAnswer, busy, language = "English" }: Props) {
   const [draft, setDraft] = useState("");
+  const copy = COPY[language] ?? ENGLISH_COPY;
 
   return (
     <div className="animate-rise rounded-2xl border bg-card p-5 shadow-clinical">
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-primary">
         <Sparkles className="size-3.5" strokeWidth={2.2} aria-hidden />
-        AI intake assistant
+        {copy.assistant}
       </div>
       <p className="mt-2 text-kiosk font-medium text-foreground">{question.text}</p>
 
@@ -33,14 +45,14 @@ export function AdaptiveQuestionCard({ question, onAnswer, busy }: Props) {
             {chip}
           </button>
         ))}
-        {!question.chips.some((c) => /not sure/i.test(c)) && (
+        {!question.chips.includes(copy.unsure) && (
           <button
             type="button"
             disabled={busy}
-            onClick={() => onAnswer("Not sure")}
+            onClick={() => onAnswer(copy.unsure)}
             className="min-h-11 rounded-full border bg-secondary px-4 text-base font-medium text-secondary-foreground transition-colors hover:bg-accent disabled:opacity-50"
           >
-            Not sure
+            {copy.unsure}
           </button>
         )}
       </div>
@@ -57,14 +69,14 @@ export function AdaptiveQuestionCard({ question, onAnswer, busy }: Props) {
         <Input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Or type your answer…"
+          placeholder={copy.placeholder}
           aria-label="Type your answer"
           className="h-12 text-base"
           disabled={busy}
         />
         <Button type="submit" size="lg" disabled={busy || !draft.trim()} className="h-12">
           <Send className="size-4" aria-hidden />
-          <span className="sr-only sm:not-sr-only">Send</span>
+          <span className="sr-only sm:not-sr-only">{copy.send}</span>
         </Button>
       </form>
     </div>

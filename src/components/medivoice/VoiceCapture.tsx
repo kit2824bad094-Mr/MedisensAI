@@ -22,6 +22,16 @@ const LOCALES: Record<string, string> = {
   "मराठी": "mr-IN",
 };
 
+type VoiceCopy = { unsupported: string; blocked: string; denied: string; empty: string; stopped: string; start: string; stop: string; listening: string; idle: string; sample: string };
+const ENGLISH_COPY: VoiceCopy = { unsupported: "This browser can't listen — playing a sample answer instead.", blocked: "Microphone access was blocked, so we played a sample answer.", denied: "Microphone permission is off. Turn it on in your browser.", empty: "We didn't catch anything. Tap the microphone and try again.", stopped: "Voice input stopped unexpectedly. Try again or type your answer.", start: "Start speaking", stop: "Stop and use what I said", listening: "Listening… speak now, then tap the square when you're done.", idle: "Tap the microphone and answer in your own words.", sample: "Tap the microphone to hear a sample answer." };
+const COPY: Record<string, VoiceCopy> = {
+  English: ENGLISH_COPY,
+  "हिन्दी": { unsupported: "यह ब्राउज़र आवाज़ नहीं सुन सकता — नमूना उत्तर चलाया जा रहा है।", blocked: "माइक्रोफ़ोन बंद है, इसलिए नमूना उत्तर चलाया गया।", denied: "माइक्रोफ़ोन की अनुमति बंद है। इसे ब्राउज़र में चालू करें।", empty: "कुछ सुनाई नहीं दिया। माइक्रोफ़ोन दबाकर फिर कोशिश करें।", stopped: "आवाज़ इनपुट रुक गया। फिर कोशिश करें या उत्तर लिखें।", start: "बोलना शुरू करें", stop: "रोकें और उत्तर इस्तेमाल करें", listening: "सुन रहे हैं… बोलें, फिर पूरा होने पर चौकोर बटन दबाएँ।", idle: "माइक्रोफ़ोन दबाकर अपने शब्दों में उत्तर दें।", sample: "नमूना उत्तर सुनने के लिए माइक्रोफ़ोन दबाएँ।" },
+  "தமிழ்": { unsupported: "இந்த உலாவியில் குரல் வசதி இல்லை — மாதிரி பதில் இயக்கப்படுகிறது.", blocked: "மைக்ரோஃபோன் தடுக்கப்பட்டது; மாதிரி பதில் இயக்கப்பட்டது.", denied: "மைக்ரோஃபோன் அனுமதி முடக்கப்பட்டுள்ளது. உலாவியில் இயக்கவும்.", empty: "எதுவும் கேட்கவில்லை. மீண்டும் முயற்சிக்கவும்.", stopped: "குரல் உள்ளீடு நின்றது. மீண்டும் முயற்சிக்கவும் அல்லது தட்டச்சு செய்யவும்.", start: "பேசத் தொடங்குங்கள்", stop: "நிறுத்தி பதிலைப் பயன்படுத்தவும்", listening: "கேட்கிறோம்… பேசி முடித்ததும் சதுரத்தைத் தட்டவும்.", idle: "மைக்ரோஃபோனைத் தட்டி உங்கள் வார்த்தைகளில் பதிலளிக்கவும்.", sample: "மாதிரி பதிலைக் கேட்க மைக்ரோஃபோனைத் தட்டவும்." },
+  "മലയാളം": { unsupported: "ഈ ബ്രൗസറിൽ ശബ്ദം ലഭ്യമല്ല — മാതൃകാ ഉത്തരം കേൾപ്പിക്കുന്നു.", blocked: "മൈക്രോഫോൺ തടഞ്ഞതിനാൽ മാതൃകാ ഉത്തരം ഉപയോഗിച്ചു.", denied: "മൈക്രോഫോൺ അനുമതി ഓഫ് ആണ്. ബ്രൗസറിൽ ഓൺ ചെയ്യൂ.", empty: "ഒന്നും കേട്ടില്ല. വീണ്ടും ശ്രമിക്കൂ.", stopped: "ശബ്ദ ഇൻപുട്ട് നിലച്ചു. വീണ്ടും ശ്രമിക്കുകയോ ടൈപ്പ് ചെയ്യുകയോ ചെയ്യൂ.", start: "സംസാരിക്കാൻ തുടങ്ങൂ", stop: "നിർത്തി ഉത്തരം ഉപയോഗിക്കൂ", listening: "കേൾക്കുന്നു… പറഞ്ഞുകഴിഞ്ഞാൽ ചതുരം അമർത്തൂ.", idle: "മൈക്രോഫോൺ അമർത്തി നിങ്ങളുടെ വാക്കുകളിൽ ഉത്തരം പറയൂ.", sample: "മാതൃകാ ഉത്തരം കേൾക്കാൻ മൈക്രോഫോൺ അമർത്തൂ." },
+  "मराठी": { unsupported: "हा ब्राउझर आवाज ऐकू शकत नाही — नमुना उत्तर चालू आहे.", blocked: "मायक्रोफोन बंद असल्याने नमुना उत्तर वापरले.", denied: "मायक्रोफोनची परवानगी बंद आहे. ब्राउझरमध्ये चालू करा.", empty: "काही ऐकू आले नाही. पुन्हा प्रयत्न करा.", stopped: "आवाज इनपुट थांबला. पुन्हा प्रयत्न करा किंवा उत्तर लिहा.", start: "बोलायला सुरुवात करा", stop: "थांबा आणि उत्तर वापरा", listening: "ऐकत आहोत… बोलून झाल्यावर चौकोन दाबा.", idle: "मायक्रोफोन दाबून तुमच्या शब्दांत उत्तर द्या.", sample: "नमुना उत्तर ऐकण्यासाठी मायक्रोफोन दाबा." },
+};
+
 type Recognition = {
   lang: string;
   continuous: boolean;
@@ -47,6 +57,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
   const [notice, setNotice] = useState<string | null>(null);
   const [levels, setLevels] = useState<number[]>(IDLE);
   const [supported, setSupported] = useState(true);
+  const copy = COPY[language] ?? ENGLISH_COPY;
 
   const recognition = useRef<Recognition | null>(null);
   const finalText = useRef("");
@@ -120,7 +131,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
     simulated.current = true;
     if (message) setNotice(message);
     setListening(true);
-    const text = await transcribeSpeech((t) => setPartial(t), seed);
+    const text = await transcribeSpeech((t) => setPartial(t), seed, language);
     simulated.current = false;
     finish(text);
   }
@@ -132,13 +143,13 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
 
     const rec = getRecognition();
     if (!rec) {
-      await runSimulated("This browser can't listen — playing a sample answer instead. Chrome or Edge supports live speech.");
+      await runSimulated(copy.unsupported);
       return;
     }
 
     const micOk = await startMeter();
     if (!micOk) {
-      await runSimulated("Microphone access was blocked, so we played a sample answer. Allow the microphone to speak for real.");
+      await runSimulated(copy.blocked);
       return;
     }
 
@@ -158,11 +169,11 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
     rec.onerror = (e: any) => {
       recognition.current = null;
       if (e?.error === "not-allowed" || e?.error === "service-not-allowed") {
-        setNotice("Microphone permission is off. Turn it on in your browser to answer by voice.");
+        setNotice(copy.denied);
       } else if (e?.error === "no-speech") {
-        setNotice("We didn't catch anything. Tap the microphone and try again.");
+        setNotice(copy.empty);
       } else {
-        setNotice("Voice input stopped unexpectedly. You can tap the microphone again or type your answer.");
+        setNotice(copy.stopped);
       }
       finish("");
     };
@@ -170,7 +181,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
       if (!recognition.current) return;
       recognition.current = null;
       const text = finalText.current.trim();
-      if (!text) setNotice("We didn't catch anything. Tap the microphone and try again.");
+      if (!text) setNotice(copy.empty);
       finish(text);
     };
 
@@ -180,7 +191,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
       rec.start();
     } catch {
       recognition.current = null;
-      await runSimulated("Voice input couldn't start, so we played a sample answer.");
+      await runSimulated(copy.blocked);
     }
   }
 
@@ -204,7 +215,7 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
             type="button"
             onClick={listening ? stop : start}
             disabled={disabled}
-            aria-label={listening ? "Stop and use what I said" : "Start speaking"}
+            aria-label={listening ? copy.stop : copy.start}
             className={cn(
               "relative grid size-16 place-items-center rounded-full text-primary-foreground transition-colors",
               listening ? "animate-breathe bg-primary" : "bg-primary hover:bg-primary/90",
@@ -230,10 +241,10 @@ export function VoiceCapture({ onTranscript, disabled, seed, language = "English
           </div>
           <p aria-live="polite" className="mt-2 min-h-6 text-sm text-muted-foreground">
             {listening
-              ? partial || "Listening… speak now, then tap the square when you're done."
+              ? partial || copy.listening
               : supported
-                ? "Tap the microphone and answer in your own words."
-                : "Tap the microphone to hear a sample answer — live speech needs Chrome or Edge."}
+                ? copy.idle
+                : copy.sample}
           </p>
         </div>
       </div>
