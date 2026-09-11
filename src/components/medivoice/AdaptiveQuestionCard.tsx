@@ -11,8 +11,10 @@ interface Props {
   language?: string;
 }
 
-const COPY: Record<string, { assistant: string; unsure: string; placeholder: string; send: string }> = {
-  English: { assistant: "AI intake assistant", unsure: "Not sure", placeholder: "Or type your answer…", send: "Send" },
+type CardCopy = { assistant: string; unsure: string; placeholder: string; send: string };
+const ENGLISH_COPY: CardCopy = { assistant: "AI intake assistant", unsure: "Not sure", placeholder: "Or type your answer…", send: "Send" };
+const COPY: Record<string, CardCopy> = {
+  English: ENGLISH_COPY,
   "हिन्दी": { assistant: "AI सेवन सहायक", unsure: "पता नहीं", placeholder: "या अपना उत्तर लिखें…", send: "भेजें" },
   "தமிழ்": { assistant: "AI உடல்நல உதவியாளர்", unsure: "தெரியவில்லை", placeholder: "அல்லது பதிலை தட்டச்சு செய்யுங்கள்…", send: "அனுப்பு" },
   "മലയാളം": { assistant: "AI ആരോഗ്യ സഹായി", unsure: "ഉറപ്പില്ല", placeholder: "അല്ലെങ്കിൽ ഉത്തരം ടൈപ്പ് ചെയ്യൂ…", send: "അയയ്ക്കുക" },
@@ -21,7 +23,7 @@ const COPY: Record<string, { assistant: string; unsure: string; placeholder: str
 
 export function AdaptiveQuestionCard({ question, onAnswer, busy, language = "English" }: Props) {
   const [draft, setDraft] = useState("");
-  const copy = COPY[language] ?? COPY["English"];
+  const copy = COPY[language] ?? ENGLISH_COPY;
 
   return (
     <div className="animate-rise rounded-2xl border bg-card p-5 shadow-clinical">

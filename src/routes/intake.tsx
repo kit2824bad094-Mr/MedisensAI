@@ -45,6 +45,13 @@ export const Route = createFileRoute("/intake")({
 type Step = "welcome" | "details" | "interview" | "reports" | "review" | "done";
 const STEP_INDEX: Record<Step, number> = { welcome: 0, details: 1, interview: 2, reports: 3, review: 4, done: 5 };
 const LANGUAGES = ["English", "हिन्दी", "தமிழ்", "മലയാളം", "मराठी"];
+const WELCOME_COPY: Record<string, { title: string; description: string; speak: string }> = {
+  English: { title: "Let's get you ready for the doctor", description: "It takes about two minutes. You can speak, tap, or type — whatever is easiest right now.", speak: "Speak to begin" },
+  "हिन्दी": { title: "डॉक्टर से मिलने की तैयारी करें", description: "इसमें लगभग दो मिनट लगेंगे। आप बोलकर, टैप करके या लिखकर उत्तर दे सकते हैं।", speak: "बोलकर शुरू करें" },
+  "தமிழ்": { title: "மருத்துவரைச் சந்திக்கத் தயாராகலாம்", description: "இதற்கு சுமார் இரண்டு நிமிடங்கள் ஆகும். பேசலாம், தட்டலாம் அல்லது தட்டச்சு செய்யலாம்.", speak: "பேசத் தொடங்குங்கள்" },
+  "മലയാളം": { title: "ഡോക്ടറെ കാണാൻ തയ്യാറാകാം", description: "ഇതിന് ഏകദേശം രണ്ട് മിനിറ്റ് മതി. സംസാരിച്ചോ, അമർത്തിയോ, ടൈപ്പ് ചെയ്തോ ഉത്തരം നൽകാം.", speak: "സംസാരിച്ച് തുടങ്ങൂ" },
+  "मराठी": { title: "डॉक्टरांना भेटण्यासाठी तयारी करूया", description: "यासाठी सुमारे दोन मिनिटे लागतील. तुम्ही बोलून, टॅप करून किंवा टाइप करून उत्तर देऊ शकता.", speak: "बोलून सुरू करा" },
+};
 
 function IntakePage() {
   const [step, setStep] = useState<Step>("welcome");
@@ -61,6 +68,7 @@ function IntakePage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<{ record: PatientRecord; queuePosition: number } | null>(null);
   const transcriptEnd = useRef<HTMLDivElement>(null);
+  const welcomeCopy = WELCOME_COPY[language] ?? WELCOME_COPY["English"];
 
   const stepNumber = Math.min(STEP_INDEX[step] + 1, 5);
 
@@ -137,10 +145,10 @@ function IntakePage() {
             <ShieldCheck className="size-3.5" aria-hidden /> Private · shared only with your doctor
           </span>
           <h1 className="mt-5 text-3xl font-bold tracking-tight md:text-4xl">
-            Let's get you ready for the doctor
+            {welcomeCopy?.title}
           </h1>
           <p className="mx-auto mt-3 max-w-md text-kiosk text-surface-foreground">
-            It takes about two minutes. You can speak, tap, or type — whatever is easiest right now.
+            {welcomeCopy?.description}
           </p>
 
           <button
@@ -152,7 +160,7 @@ function IntakePage() {
             className="mx-auto mt-8 grid size-36 animate-breathe place-items-center rounded-full bg-primary text-primary-foreground shadow-clinical transition-colors hover:bg-primary/90"
           >
             <Mic className="size-12" strokeWidth={1.8} aria-hidden />
-            <span className="mt-1 text-sm font-semibold">Speak to begin</span>
+            <span className="mt-1 text-sm font-semibold">{welcomeCopy?.speak}</span>
           </button>
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
