@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Clock, PlugZap, Users } from "lucide-react";
+import { ArrowRight, Clock, Eye, EyeOff, PlugZap, Users } from "lucide-react";
 import { UrgencyBadge } from "@/components/medivoice/UrgencyBadge";
-import { useRecords } from "@/lib/medivoice/store";
+import { updateRecord, useRecords } from "@/lib/medivoice/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/doctor/")({
