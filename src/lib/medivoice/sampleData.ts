@@ -13,6 +13,7 @@ export const samplePatients: PatientRecord[] = [
     arrivedAt: "09:12",
     urgency: "red-flag",
     reviewed: false,
+    viewed: false,
     symptoms: [
       {
         question: "What brings you in today?",
@@ -130,6 +131,7 @@ export const samplePatients: PatientRecord[] = [
     arrivedAt: "09:26",
     urgency: "priority",
     reviewed: false,
+    viewed: false,
     symptoms: [
       { question: "What brings you in today?", answer: "Fever for three days, feeling very weak.", at: "09:27" },
       {
@@ -243,6 +245,7 @@ export const samplePatients: PatientRecord[] = [
     arrivedAt: "09:41",
     urgency: "normal",
     reviewed: false,
+    viewed: false,
     symptoms: [
       { question: "What brings you in today?", answer: "Sore throat and blocked nose since yesterday.", at: "09:42" },
       {
@@ -296,6 +299,7 @@ export const samplePatients: PatientRecord[] = [
     arrivedAt: "09:55",
     urgency: "priority",
     reviewed: true,
+    viewed: true,
     symptoms: [
       { question: "What brings you in today?", answer: "Knee pain, worse on the stairs.", at: "09:56" },
       {
